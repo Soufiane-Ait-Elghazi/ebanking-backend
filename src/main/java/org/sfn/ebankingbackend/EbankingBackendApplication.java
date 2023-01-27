@@ -1,9 +1,7 @@
 package org.sfn.ebankingbackend;
 
-import org.sfn.ebankingbackend.entities.AccountOperation;
-import org.sfn.ebankingbackend.entities.CurrentAccount;
-import org.sfn.ebankingbackend.entities.Customer;
-import org.sfn.ebankingbackend.entities.SavingAccount;
+import net.bytebuddy.implementation.bind.MethodDelegationBinder;
+import org.sfn.ebankingbackend.entities.*;
 import org.sfn.ebankingbackend.enums.AccountStatus;
 import org.sfn.ebankingbackend.enums.OperationType;
 import org.sfn.ebankingbackend.repositories.AccountOperationRepository;
@@ -61,8 +59,16 @@ public class EbankingBackendApplication {
                         accountOperationRepository.save(accountOperation);
                     }
                 });
-
+                BankAccount bankAccount =
+                        bankAccountRepository.findById((long) 1.0).orElse(null);
+                System.out.println("____________________________________________");
+                if(bankAccount instanceof  CurrentAccount){
+                    System.out.println("Current");
+                }else{
+                    System.out.println("Saving");
+                }
             };
     }
+
 
 }
