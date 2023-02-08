@@ -4,9 +4,11 @@ import net.bytebuddy.implementation.bind.MethodDelegationBinder;
 import org.sfn.ebankingbackend.entities.*;
 import org.sfn.ebankingbackend.enums.AccountStatus;
 import org.sfn.ebankingbackend.enums.OperationType;
+import org.sfn.ebankingbackend.exceptions.CustomerNotFountException;
 import org.sfn.ebankingbackend.repositories.AccountOperationRepository;
 import org.sfn.ebankingbackend.repositories.BankAccountRepository;
 import org.sfn.ebankingbackend.repositories.CustomerRepository;
+import org.sfn.ebankingbackend.services.BankAccountService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -22,6 +24,25 @@ public class EbankingBackendApplication {
         SpringApplication.run(EbankingBackendApplication.class, args);
     }
 
+    @Bean
+    CommandLineRunner commandLineRunner(BankAccountService bankAccountService){
+        return args -> {
+            Stream.of("Salma","Lamiae","Kamal").forEach(name->{
+                Customer customer = new Customer();
+                customer.setName(name);
+                customer.setEmail(name+"@gmail.com");
+                bankAccountService.saveCustomer(customer);
+            });
+            bankAccountService.customers().forEach(customer -> {
+                try {
+                    bankAccountService.saveCurrentBankAccount(Math.random()*90000,customer.getId(),9000);
+                    bankAccountService.saveSavingBankAccount(Math.random()*90000,customer.getId(),5.5);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        };
+    }
    @Bean
     CommandLineRunner start(CustomerRepository customerRepository,
                             BankAccountRepository bankAccountRepository,
@@ -65,6 +86,7 @@ public class EbankingBackendApplication {
                 if(bankAccount instanceof  CurrentAccount){
                     System.out.println("Current");
                 }else{
+
                     System.out.println("Saving");
                 }
             };
