@@ -1,5 +1,6 @@
 package org.sfn.ebankingbackend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,7 +27,9 @@ public class BankAccount {
     private Date creationDate;
     private AccountStatus status;
     @ManyToOne
+    @JsonIgnore
     private Customer customer;
     @OneToMany(mappedBy = "bankAccount")
+    @JsonIgnore
     private List<AccountOperation> accountOperations ;
 }

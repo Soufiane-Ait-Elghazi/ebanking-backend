@@ -1,5 +1,6 @@
 package org.sfn.ebankingbackend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,5 +23,6 @@ public class Customer {
     private String name;
     private String email;
     @OneToMany(mappedBy = "customer")
+    @JsonIgnore
     private List<BankAccount> bankAccounts;
 }
