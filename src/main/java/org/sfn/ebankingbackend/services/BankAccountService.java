@@ -1,5 +1,6 @@
 package org.sfn.ebankingbackend.services;
 
+import org.sfn.ebankingbackend.dtos.CustomerDto;
 import org.sfn.ebankingbackend.entities.BankAccount;
 import org.sfn.ebankingbackend.entities.CurrentAccount;
 import org.sfn.ebankingbackend.entities.Customer;
@@ -17,7 +18,7 @@ public interface BankAccountService {
 
     public CurrentAccount  saveCurrentBankAccount(double initialBalance , Long customerId,double overDraft) throws CustomerNotFountException;
     public SavingAccount saveSavingBankAccount(double initialBalance , Long customerId, double interestRate ) throws CustomerNotFountException;
-    public List<Customer> customers();
+    public List<CustomerDto> customers();
     public List<BankAccount> accounts();
     public BankAccount getAccont(Long id) throws BankAccountNotFountException;
     public void debit(Long accountId,double amount,String description) throws BankAccountNotFountException, BalanceNotSufficientException;

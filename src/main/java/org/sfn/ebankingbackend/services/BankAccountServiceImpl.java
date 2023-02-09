@@ -1,11 +1,13 @@
 package org.sfn.ebankingbackend.services;
 
 
+import org.sfn.ebankingbackend.dtos.CustomerDto;
 import org.sfn.ebankingbackend.entities.*;
 import org.sfn.ebankingbackend.enums.OperationType;
 import org.sfn.ebankingbackend.exceptions.BalanceNotSufficientException;
 import org.sfn.ebankingbackend.exceptions.BankAccountNotFountException;
 import org.sfn.ebankingbackend.exceptions.CustomerNotFountException;
+import org.sfn.ebankingbackend.mappers.CustomerMapper;
 import org.sfn.ebankingbackend.repositories.AccountOperationRepository;
 import org.sfn.ebankingbackend.repositories.BankAccountRepository;
 import org.sfn.ebankingbackend.repositories.CustomerRepository;
@@ -16,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -23,15 +26,18 @@ public class BankAccountServiceImpl  implements  BankAccountService{
     private CustomerRepository customerRepository ;
     private BankAccountRepository bankAccountRepository;
     private AccountOperationRepository accountOperationRepository;
+    private CustomerMapper customerMapper ;
 
     Logger log = LoggerFactory.getLogger(this.getClass().getName());
 
     BankAccountServiceImpl(CustomerRepository customerRepository,
                            BankAccountRepository bankAccountRepository,
-                            AccountOperationRepository accountOperationRepository){
+                            AccountOperationRepository accountOperationRepository,
+                           CustomerMapper customerMapper){
         this.customerRepository = customerRepository ;
         this.bankAccountRepository = bankAccountRepository ;
         this.accountOperationRepository = accountOperationRepository;
+        this.customerMapper = customerMapper;
     }
     @Override
     public Customer saveCustomer(Customer customer) {
@@ -69,8 +75,10 @@ public class BankAccountServiceImpl  implements  BankAccountService{
 
 
     @Override
-    public List<Customer> customers() {
-        return customerRepository.findAll();
+    public List<CustomerDto> customers() {
+        List<Customer> customers = customerRepository.findAll();
+        List<CustomerDto> collect = customers.stream().map(cust -> customerMapper.fromCustomer(cust)).collect(Collectors.toList());
+        return  collect ;
     }
 
     @Override
