@@ -18,8 +18,10 @@ public interface BankAccountService {
     public CurrentAccount  saveCurrentBankAccount(double initialBalance , Long customerId,double overDraft) throws CustomerNotFountException;
     public SavingAccount saveSavingBankAccount(double initialBalance , Long customerId, double interestRate ) throws CustomerNotFountException;
     public List<Customer> customers();
+    public List<BankAccount> accounts();
     public BankAccount getAccont(Long id) throws BankAccountNotFountException;
-    void debit(Long accountId,double amount,String description) throws BankAccountNotFountException, BalanceNotSufficientException;
-    void credit(Long accountId,double amount,String description) throws BankAccountNotFountException, BalanceNotSufficientException;
-    void transfer(Long accountIdSource,Long accountIdDestination,double amount) throws BankAccountNotFountException, BalanceNotSufficientException;
+    public void debit(Long accountId,double amount,String description) throws BankAccountNotFountException, BalanceNotSufficientException;
+    public void credit(Long accountId,double amount,String description) throws BankAccountNotFountException, BalanceNotSufficientException;
+    public void transfer(Long accountIdSource,Long accountIdDestination,double amount) throws BankAccountNotFountException, BalanceNotSufficientException;
+
 }

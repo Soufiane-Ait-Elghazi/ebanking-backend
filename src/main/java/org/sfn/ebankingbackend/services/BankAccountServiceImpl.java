@@ -77,7 +77,6 @@ public class BankAccountServiceImpl  implements  BankAccountService{
     public BankAccount getAccont(Long id) throws BankAccountNotFountException {
          BankAccount bankAccount = bankAccountRepository.findById(id)
                  .orElseThrow(()-> new BankAccountNotFountException("Bank Account not found !!"));
-
         return bankAccount;
     }
 
@@ -116,4 +115,11 @@ public class BankAccountServiceImpl  implements  BankAccountService{
          this.debit(accountIdSource,amount,"Transfert to "+ accountIdDestination);
          this.credit(accountIdDestination,amount,"Transfert from "+accountIdSource);
     }
+
+    @Override
+    public List<BankAccount> accounts() {
+        return bankAccountRepository.findAll();
+    }
+
+
 }
